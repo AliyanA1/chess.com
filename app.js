@@ -45,6 +45,21 @@ io.on("connection",(uniqueSocket)=>{
             delete player.black;
         }
     })
+    //come form frontend
+    uniqueSocket.on("move",(move)=>{
+        try {
+            if(chess.turn()==='w' && uniqueSocket.id!=player.white) return;
+            else if(chess.turn()==='b' && uniqueSocket.id!=player.black) return;
+
+           const result=chess.move(move);
+           if(result){
+                currentPlayer= chess.turn();
+                io.emit("move",move);
+           }
+        } catch (error) {
+            //next work tomorrow
+        }
+    })
 })
 
 
