@@ -1,2 +1,2 @@
 // Initiate socket connection
-const socket=io()
+const socket=io();
