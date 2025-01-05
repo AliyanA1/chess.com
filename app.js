@@ -55,9 +55,15 @@ io.on("connection",(uniqueSocket)=>{
            if(result){
                 currentPlayer= chess.turn();
                 io.emit("move",move);
+                io.emit("boardState", chess.fen());
+
+           }
+           else{
+                uniqueSocket.emit("Invalid Move",move);
            }
         } catch (error) {
             //next work tomorrow
+            uniqueSocket.emit('Invalid Move',move);
         }
     })
 })
