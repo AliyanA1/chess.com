@@ -16,6 +16,13 @@ const Renderboard=()=>{
             squareElement.classList.add("square",
                 (rowIndex+squareIndex)%2==0? "light":"dark"
             );
+
+            squareElement.dataset.row=rowIndex;
+            squareElement.dataset.col=squareIndex;
+            if(square){
+                const pieceElement=document.createElement("div");
+                pieceElement.classList.add("piece", square.color === "w" ? "white" : "black");
+            }
         })
     })
 };
