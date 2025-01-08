@@ -59,6 +59,8 @@ const Renderboard=()=>{
               
                
             });
+            boardElement.appendChild(squareElement);
+        });
             
         })
     })
