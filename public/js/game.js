@@ -63,6 +63,10 @@ const Renderboard=()=>{
         });
 
     });
+
+    if(playerRole=== "b"){
+        boardElement.classList.add("flipped")
+    }
 };
 
 const HandleMove=(source, target)=>{
@@ -71,6 +75,7 @@ const HandleMove=(source, target)=>{
         to: `${String.fromCharCode(97+target.col)}${8-target.row}`,
         promotion: "q"
     }
+    socket.emit("move",move);
 };
 
 const GetpieceUnicode=(piece)=>{
@@ -80,15 +85,38 @@ const GetpieceUnicode=(piece)=>{
         r: "&#9820;",
         b: "&#9821;",
         n: "&#9822;",
-        p: piece.color === "w" ? "&#9817;" : "&#9817;",
+        p: "&#9817;",
         K: "&#9812;",
         Q: "&#9813;",
         R: "&#9814;",
         B: "&#9815;",
         N: "&#9816;",
-        P: piece.color === "w" ? "&#9817;" : "&#9817;"
+        P: "&#9817;"
     };
     return unicode[piece.type] || "";
 };
+
+socket.on("playerRole",(role)=>{
+    playerRole=role;
+    Renderboard();
+});
+
+socket.on("spectator",()=>{
+    playerRole=null;
+    Renderboard();
+})
+
+socket.on("boardstate",(board)=>{
+    chess.load(board);
+    Renderboard();
+});
+
+socket.on("move",(move)=>{
+    chess.move(move);
+    Renderboard();
+})
+
+
+ 
 
 Renderboard();
