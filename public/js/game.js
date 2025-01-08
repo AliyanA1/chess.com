@@ -25,7 +25,7 @@ const Renderboard=()=>{
                 const pieceElement=document.createElement("div");
                 pieceElement.classList.add("piece", square.color === "w" ? "white" : "black");
                 
-                pieceElement.innertext="";
+                pieceElement.innerHTML=GetpieceUnicode(square);
                 pieceElement.draggable= playerRole === square.color;
 
                 pieceElement.addEventListener("dragstart", (e)=>{
@@ -59,13 +59,64 @@ const Renderboard=()=>{
               
                
             });
-            
-        })
-    })
+            boardElement.appendChild(squareElement);
+        });
+
+    });
+
+    if(playerRole=== "b"){
+        boardElement.classList.add("flipped")
+    }
 };
 
-const HandleMove=()=>{};
+const HandleMove=(source, target)=>{
+    const move={
+        from: `${String.fromCharCode(97+source.col)}${8-source.row}`,
+        to: `${String.fromCharCode(97+target.col)}${8-target.row}`,
+        promotion: "q"
+    }
+    socket.emit("move",move);
+};
 
-const GetpieceUnicode=()=>{};
+const GetpieceUnicode=(piece)=>{
+    const unicode= {
+        k: "&#9818;",
+        q: "&#9819;",
+        r: "&#9820;",
+        b: "&#9821;",
+        n: "&#9822;",
+        p: "&#9817;",
+        K: "&#9812;",
+        Q: "&#9813;",
+        R: "&#9814;",
+        B: "&#9815;",
+        N: "&#9816;",
+        P: "&#9817;"
+    };
+    return unicode[piece.type] || "";
+};
+
+socket.on("playerRole",(role)=>{
+    playerRole=role;
+    Renderboard();
+});
+
+socket.on("spectator",()=>{
+    playerRole=null;
+    Renderboard();
+})
+
+socket.on("boardstate",(board)=>{
+    chess.load(board);
+    Renderboard();
+});
+
+socket.on("move",(move)=>{
+    chess.move(move);
+    Renderboard();
+})
+
+
+ 
 
 Renderboard();
