@@ -20,6 +20,7 @@ const Renderboard=()=>{
 
             squareElement.dataset.row=rowIndex;
             squareElement.dataset.col=squareIndex;
+            //square if there is a valid piece
             if(square){
                 const pieceElement=document.createElement("div");
                 pieceElement.classList.add("piece", square.color === "w" ? "white" : "black");
@@ -32,8 +33,32 @@ const Renderboard=()=>{
                 Sourcesquare={row: rowIndex, col: squareIndex};
                 e.dataTransfer.setData("text/plain","");
               })
-            }
 
+               pieceElement.addEventListener("dragend",(e)=>{
+                 draggedPiece=null;
+                 Sourcesquare=null;
+               })
+
+               squareElement.appendChild(pieceElement);
+            }
+            
+            squareElement.addEventListener("dragover",(e)=>{
+                e.preventDefault();
+            });
+
+            squareElement.addEventListener("drop",(e)=>{
+                e.preventDefault();
+               if(draggedPiece){
+                    const targetSource={
+                        row: parseInt(squareElement.dataset.row),
+                        col: parseInt(squareElement.dataset.col)
+                    };
+
+                    HandleMove(Sourcesquare,targetSource);
+               }
+              
+               
+            });
             
         })
     })
