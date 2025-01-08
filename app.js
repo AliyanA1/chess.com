@@ -46,26 +46,23 @@ io.on("connection",(uniqueSocket)=>{
         }
     })
     //come form frontend
-    uniqueSocket.on("move",(move)=>{
+    uniqueSocket.on("move", (move) => {
         try {
-            if(chess.turn()==='w' && uniqueSocket.id!=player.white) return;
-            else if(chess.turn()==='b' && uniqueSocket.id!=player.black) return;
-
-           const result=chess.move(move);
-           if(result){
-                currentPlayer= chess.turn();
-                io.emit("move",move);
-                io.emit("boardState", chess.fen());
-
-           }
-           else{
-                uniqueSocket.emit("Invalid Move",move);
-           }
+            if (chess.turn() === 'w' && uniqueSocket.id !== player.white) return;
+            else if (chess.turn() === 'b' && uniqueSocket.id !== player.black) return;
+    
+            const result = chess.move(move);
+            if (result) {
+                io.emit("move", move); // Send move to all players
+                io.emit("boardState", chess.fen()); // Send updated board state to all
+            } else {
+                uniqueSocket.emit("Invalid Move", move);
+            }
         } catch (error) {
-            //next work tomorrow
-            uniqueSocket.emit('Invalid Move',move);
+            uniqueSocket.emit("Invalid Move", move);
         }
-    })
+    });
+    
 })
 
 
