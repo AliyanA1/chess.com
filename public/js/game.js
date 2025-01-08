@@ -25,7 +25,7 @@ const Renderboard=()=>{
                 const pieceElement=document.createElement("div");
                 pieceElement.classList.add("piece", square.color === "w" ? "white" : "black");
                 
-                pieceElement.innertext="";
+                pieceElement.innerHTML=GetpieceUnicode(square);
                 pieceElement.draggable= playerRole === square.color;
 
                 pieceElement.addEventListener("dragstart", (e)=>{
@@ -61,12 +61,17 @@ const Renderboard=()=>{
             });
             boardElement.appendChild(squareElement);
         });
-            
-        })
-    })
+
+    });
 };
 
-const HandleMove=()=>{};
+const HandleMove=(source, target)=>{
+    const move={
+        from: `${String.fromCharCode(97+source.col)}${8-source.row}`,
+        to: `${String.fromCharCode(97+target.col)}${8-target.row}`,
+        promotion: "q"
+    }
+};
 
 const GetpieceUnicode=(piece)=>{
     const unicode= {
