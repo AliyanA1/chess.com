@@ -68,6 +68,22 @@ const Renderboard=()=>{
 
 const HandleMove=()=>{};
 
-const GetpieceUnicode=()=>{};
+const GetpieceUnicode=(piece)=>{
+    const unicode= {
+        k: "&#9818;",
+        q: "&#9819;",
+        r: "&#9820;",
+        b: "&#9821;",
+        n: "&#9822;",
+        p: piece.color === "w" ? "&#9817;" : "&#9817;",
+        K: "&#9812;",
+        Q: "&#9813;",
+        R: "&#9814;",
+        B: "&#9815;",
+        N: "&#9816;",
+        P: piece.color === "w" ? "&#9817;" : "&#9817;"
+    };
+    return unicode[piece.type] || "";
+};
 
 Renderboard();
