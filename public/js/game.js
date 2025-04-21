@@ -20,7 +20,7 @@ const Renderboard=()=>{
 
             squareElement.dataset.row=rowIndex;
             squareElement.dataset.col=squareIndex;
-            //square if there is a valid piece
+            
             if(square){
                 const pieceElement=document.createElement("div");
                 pieceElement.classList.add("piece", square.color === "w" ? "white" : "black");
